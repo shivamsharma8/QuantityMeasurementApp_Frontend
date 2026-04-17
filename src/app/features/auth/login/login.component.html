@@ -1,0 +1,58 @@
+<div class="auth-container mt-8">
+  <div class="card auth-card">
+    <div class="auth-header text-center mb-8">
+      <span class="material-symbols-outlined auth-icon">lock</span>
+      <h2>Secure Access</h2>
+      <p class="text-neutral mt-2">Log in to view your measurement history.</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mb-4">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input 
+          id="email" 
+          type="email" 
+          class="form-control" 
+          formControlName="email" 
+          placeholder="name@company.com"
+          [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        />
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
+          A valid email is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input 
+          id="password" 
+          type="password" 
+          class="form-control" 
+          formControlName="password" 
+          placeholder="Enter password"
+          [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        />
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
+          Password must be at least 6 characters.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-4" [disabled]="isLoading">
+        <span *ngIf="isLoading" class="material-symbols-outlined spin">sync</span>
+        {{ isLoading ? 'Authenticating...' : 'Log In' }}
+      </button>
+
+      <div class="divider"><span>OR</span></div>
+
+      <div id="google-btn-container" class="mt-4 flex justify-center"></div>
+    </form>
+
+    <div class="auth-footer text-center mt-6">
+      <p class="text-neutral text-sm">Don't have an account? <a routerLink="/register">Request Access</a></p>
+    </div>
+  </div>
+</div>

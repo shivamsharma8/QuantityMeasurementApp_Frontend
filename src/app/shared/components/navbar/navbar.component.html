@@ -1,0 +1,24 @@
+<nav class="navbar text-center mt-4">
+  <div class="container navbar-container">
+    <div class="brand">
+      <a routerLink="/" class="brand-link">
+        <span class="material-symbols-outlined brand-icon">square_foot</span>
+        <span class="brand-text">Quantify</span>
+      </a>
+    </div>
+
+    <div class="nav-links">
+      <a routerLink="/quantity" routerLinkActive="active-link" class="nav-item">Operations</a>
+
+      <ng-container *ngIf="authService.isLoggedIn$ | async; else loggedOut">
+        <a routerLink="/history" routerLinkActive="active-link" class="nav-item">History</a>
+        <button (click)="logout()" class="btn btn-secondary btn-sm nav-btn">Logout</button>
+      </ng-container>
+
+      <ng-template #loggedOut>
+        <a routerLink="/login" routerLinkActive="active-link" class="nav-item">Log In</a>
+        <a routerLink="/register" class="btn btn-primary btn-sm nav-btn">Sign Up</a>
+      </ng-template>
+    </div>
+  </div>
+</nav>

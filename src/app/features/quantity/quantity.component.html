@@ -1,0 +1,109 @@
+<div class="container main-layout mt-6">
+
+  <div class="operation-tabs mb-6">
+    <button *ngFor="let op of operations" 
+            class="tab-btn" 
+            [class.active]="quantityForm.get('operation')?.value === op"
+            (click)="setOperation(op)">
+      {{ op | titlecase }}
+    </button>
+  </div>
+
+  <div class="card quantity-card form-layout shadow-sm">
+    <div class="form-header">
+      <h2>Configure Operation</h2>
+      <p class="text-neutral text-sm">Select domain category and supply variables below.</p>
+    </div>
+
+    <form [formGroup]="quantityForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group mb-6">
+        <label class="form-label">Measurement Category</label>
+        <div class="category-pills">
+          <label *ngFor="let cat of categories" class="pill-label" [class.active-pill]="quantityForm.get('category')?.value === cat">
+            <input type="radio" formControlName="category" [value]="cat" class="hidden-radio" />
+            <span class="pill-text">{{ cat | titlecase }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="inputs-grid" [class.two-cols]="!isMathOperation" [class.three-cols]="isMathOperation">
+        <!-- Input 1 Area -->
+        <div class="input-block">
+          <div class="form-group">
+            <label class="form-label">Value 1</label>
+            <input type="number" class="form-control text-lg" formControlName="value1" placeholder="0.0" />
+            <div *ngIf="quantityForm.get('value1')?.invalid && quantityForm.get('value1')?.touched" class="text-danger text-sm">Required.</div>
+          </div>
+          <div class="form-group mt-2">
+            <label class="form-label text-sm">Unit 1</label>
+            <select class="form-control" formControlName="unit1">
+              <option *ngFor="let u of units" [value]="u">{{ u }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Operator Visualizer -->
+        <div class="operator-display" *ngIf="isMathOperation">
+          <span class="material-symbols-outlined op-icon">
+             {{ quantityForm.get('operation')?.value === 'add' ? 'add_circle' : '' }}
+             {{ quantityForm.get('operation')?.value === 'subtract' ? 'do_not_disturb_on' : '' }}
+             {{ quantityForm.get('operation')?.value === 'divide' ? 'safety_divider' : '' }}
+             {{ quantityForm.get('operation')?.value === 'compare' ? 'compare_arrows' : '' }}
+          </span>
+        </div>
+
+        <!-- Input 2 Area -->
+        <div class="input-block" *ngIf="isMathOperation">
+          <div class="form-group">
+            <label class="form-label">Value 2</label>
+            <input type="number" class="form-control text-lg" formControlName="value2" placeholder="0.0" />
+          </div>
+          <div class="form-group mt-2">
+             <!-- Compare doesn't strictly need unit2 conceptually but API requires target unit to evaluate equality or same unit. We use unit2 -->
+            <label class="form-label text-sm">Unit 2</label>
+            <select class="form-control" formControlName="unit2">
+               <option *ngFor="let u of units" [value]="u">{{ u }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-block" *ngIf="!isMathOperation">
+            <div class="form-group empty-state-box">
+              <p class="text-neutral text-sm mt-8">Converting to</p>
+            </div>
+            <div class="form-group mt-2">
+               <label class="form-label text-sm">Target Unit</label>
+               <select class="form-control border-accent" formControlName="unit2">
+                 <option *ngFor="let u of units" [value]="u">{{ u }}</option>
+               </select>
+            </div>
+        </div>
+      </div>
+
+      <div class="action-footer mt-8">
+        <button type="submit" class="btn btn-primary btn-exe" [disabled]="isProcessing">
+           <span class="material-symbols-outlined mr-2">bolt</span>
+           {{ isProcessing ? 'Executing...' : 'Calculate' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="result-area mt-8 pb-8" *ngIf="resultMessage">
+     <div class="card result-card" [class.success]="isSuccess" [class.error]="!isSuccess">
+        <div class="result-content">
+           <h3 class="result-title">{{ isSuccess ? 'Operation Result' : 'Operation Error' }}</h3>
+           <p class="result-data text-xl">{{ resultMessage }}</p>
+        </div>
+        <div class="result-actions" *ngIf="isSuccess">
+           <button class="btn btn-secondary btn-sm" (click)="viewHistory()">
+             <span class="material-symbols-outlined mr-2">history</span>
+             View History
+           </button>
+        </div>
+     </div>
+  </div>
+
+</div>
