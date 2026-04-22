@@ -8,7 +8,7 @@ import { QuantityInputDto, QuantityResponseDto } from '../models/quantity.models
   providedIn: 'root'
 })
 export class QuantityService {
-  private apiUrl = `${environment.apiUrl}/api/quantity`;
+  private apiUrl = `${environment.apiUrl}/api/v1/quantities`;
 
   constructor(private http: HttpClient) {}
 
