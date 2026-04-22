@@ -1,0 +1,79 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 450px;
+}
+
+.auth-icon {
+  font-size: 2.5rem;
+  color: var(--color-primary-500);
+  background: var(--color-primary-50);
+  padding: 1rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.w-100 { width: 100%; }
+.mt-6 { margin-top: 1.5rem; }
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+}
+.alert-danger {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.invalid {
+  border-color: var(--color-danger);
+}
+.invalid:focus {
+  box-shadow: 0 0 0 3px var(--color-danger-bg);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--color-neutral-400);
+  font-size: 0.875rem;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.divider span {
+  padding: 0 0.75rem;
+}
+
+.google-btn {
+  display: flex;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+.google-logo {
+  width: 18px;
+  height: 18px;
+}

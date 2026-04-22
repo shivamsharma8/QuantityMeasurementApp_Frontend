@@ -1,0 +1,67 @@
+<div class="container mt-8">
+  <div class="history-header mb-6">
+    <div>
+      <h1 class="text-xl">Operation History</h1>
+      <p class="text-neutral">Audit log of your historical conversions and computations.</p>
+    </div>
+    <button class="btn btn-secondary" (click)="loadHistory()">
+      <span class="material-symbols-outlined mr-2">refresh</span> Refresh
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center mt-8">
+    <span class="material-symbols-outlined spin text-primary" style="font-size: 2.5rem;">sync</span>
+    <p class="mt-2 text-neutral">Loading records...</p>
+  </div>
+
+  <div *ngIf="errorMessage && !isLoading" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && historyItems.length === 0" class="empty-state text-center card mt-4">
+    <span class="material-symbols-outlined text-neutral" style="font-size: 3rem;">receipt_long</span>
+    <h3 class="mt-4">No Records Found</h3>
+    <p class="text-neutral mt-2">Perform an operation first — history is saved automatically.</p>
+    <a routerLink="/quantity" class="btn btn-primary mt-4">Go to Operations</a>
+  </div>
+
+  <div *ngIf="!isLoading && historyItems.length > 0" class="table-container card mt-4">
+    <table class="enterprise-table">
+      <thead>
+        <tr>
+          <th>Operation</th>
+          <th>Domain</th>
+          <th>Input</th>
+          <th>Target Unit</th>
+          <th>Result</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of historyItems">
+          <td>
+             <span class="badge" [class.badge-primary]="item.operationType === 'Convert'" [class.badge-accent]="item.operationType !== 'Convert'">
+               {{ item.operationType | titlecase }}
+             </span>
+          </td>
+          <td>{{ item.category | titlecase }}</td>
+          <td>
+            {{ item.value1 }} {{ item.unit1 }}
+            <span *ngIf="item.value2"> &amp; {{ item.value2 }} {{ item.unit2 }}</span>
+          </td>
+          <td>{{ item.targetUnit || item.unit2 }}</td>
+          <td class="font-medium text-success">
+            <ng-container *ngIf="item.operationType === 'Compare'">
+              {{ item.isEqual ? 'Equal ✓' : 'Not Equal ✗' }}
+            </ng-container>
+            <ng-container *ngIf="item.operationType === 'Add'">{{ item.additionResult }}</ng-container>
+            <ng-container *ngIf="item.operationType === 'Subtract'">{{ item.subtractionResult }}</ng-container>
+            <ng-container *ngIf="item.operationType === 'Divide'">{{ item.divisionResult }}</ng-container>
+            <ng-container *ngIf="item.operationType === 'Convert'">{{ item.unit1 }} → {{ item.targetUnit }}</ng-container>
+          </td>
+          <td class="text-neutral-500">{{ item.createdAt | date:'M/d/yy, h:mm a':'+0530' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
