@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build"
+  publish = "dist/quantity-measurement-app-frontend"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
